@@ -42,7 +42,7 @@ ytb/
 
 ```bash
 # Clone the repository
-git clone <your-repo-url>
+git clone https://github.com/Suhas-Koheda/YoutubeGenerator
 cd ytb
 
 # Copy environment template
