@@ -40,6 +40,7 @@ ytb/
 
 ### 1. Clone and Setup Environment
 
+#### For Linux/macOS:
 ```bash
 # Clone the repository
 git clone https://github.com/Suhas-Koheda/YoutubeGenerator
@@ -47,6 +48,16 @@ cd YoutubeGenerator
 
 # Copy environment template
 cp .env.example .env
+```
+
+#### For Windows:
+```cmd
+# Clone the repository
+git clone https://github.com/Suhas-Koheda/YoutubeGenerator
+cd YoutubeGenerator
+
+# Copy environment template
+copy .env.example .env
 ```
 
 ### 2. Configure Environment Variables
@@ -68,12 +79,28 @@ DEBUG=True
 ### 3. Install Dependencies
 
 #### Backend Dependencies
+
+**For Linux/macOS:**
 ```bash
 pip install -r requirements.txt
 ```
 
+**For Windows:**
+```cmd
+pip install -r requirements.txt
+```
+
 #### Frontend Dependencies
+
+**For Linux/macOS:**
 ```bash
+cd frontend
+npm install
+cd ..
+```
+
+**For Windows:**
+```cmd
 cd frontend
 npm install
 cd ..
@@ -82,20 +109,74 @@ cd ..
 ### 4. Run the Application
 
 #### Quick Start (Both Frontend & Backend)
+
+**For Linux/macOS:**
 ```bash
 chmod +x run.sh
 ./run.sh
 ```
 
+**For Windows:**
+Create a `run.bat` file with the following content:
+```batch
+@echo off
+echo Starting YouTube Content Manager...
+echo ================================
+
+REM Start backend server
+echo Starting backend server...
+start "Backend Server" cmd /k "python main.py"
+
+REM Wait a moment for backend to start
+timeout /t 3 /nobreak > nul
+
+REM Start frontend server
+echo Starting frontend server...
+cd frontend
+start "Frontend Server" cmd /k "npm run dev"
+cd ..
+
+echo.
+echo 🚀 Application is now running!
+echo ================================
+echo Frontend: http://localhost:3000
+echo Backend:  http://localhost:8000
+echo API Docs: http://localhost:8000/docs
+echo.
+echo Press any key to stop all servers...
+pause > nul
+
+REM Kill all node and python processes (optional cleanup)
+taskkill /f /im node.exe 2>nul
+taskkill /f /im python.exe 2>nul
+echo All servers stopped.
+```
+
+Then run:
+```cmd
+run.bat
+```
+
 #### Manual Start
 
-**Backend:**
+**Backend (Linux/macOS):**
 ```bash
 uvicorn main:app --host 0.0.0.0 --port 8000 --reload
 ```
 
-**Frontend:**
+**Backend (Windows):**
+```cmd
+uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+```
+
+**Frontend (Linux/macOS):**
 ```bash
+cd frontend
+npm start
+```
+
+**Frontend (Windows):**
+```cmd
 cd frontend
 npm start
 ```
@@ -179,6 +260,26 @@ The frontend is built with React and Vite:
 1. **API Token Error**: Ensure your GitHub API token is valid and has necessary permissions
 2. **Port Already in Use**: Change the PORT in `.env` or kill the process using the port
 3. **CORS Errors**: Ensure frontend URL is added to CORS origins in `main.py`
+4. **PostCSS Config Error**: If you see "module is not defined in ES module scope", ensure `postcss.config.js` uses ES6 export syntax:
+   ```javascript
+   export default {
+     plugins: {
+       tailwindcss: {},
+       autoprefixer: {},
+     },
+   }
+   ```
+
+### Platform-Specific Issues
+
+#### Windows
+- Use `run.bat` instead of `run.sh`
+- Use `copy` instead of `cp` for file operations
+- Use `cmd` instead of `bash` for terminal commands
+
+#### Linux/macOS
+- Make sure `run.sh` is executable: `chmod +x run.sh`
+- Use forward slashes for file paths
 
 ### Getting Help
 
